@@ -38,47 +38,91 @@
 </head>
 
 <body>
-    <h1>Start</h1>
+    <h1>Decision Tool Tree</h1>
     <div id="drawing"></div>
 
     <script>
         // The first shape in the array must be the starting shape of the chart. It must be a decision shape.
         flowSVG.draw(SVG('drawing').size(900, 1100));
 
-        // config options, some are experimental
+        // config options, more found in src/init.js
         flowSVG.config({
+            w: 200, // Shape width
+            h: 180, // Shape height
             interactive: true,
             showButtons: true,
             connectorLength: 60,
+            connectorStrokeWidth: 3,
             scrollto: true,
-            scrollOffset: 300
+            scrollOffset: 300,
+            arrowColour: 'blue',
+            decisionFill: 'firebrick',
+            processFill: 'navajowhite',
+            finishFill: 'seagreen',
+            defaultFontSize: '14'
         });
 
-        // Then construct an array of shape objects.
         flowSVG.shapes([
             {
-                label: 'knowPolicy',
+                label: 'start_decision',
                 type: 'decision',
                 text: [
-                    'Do you know the ',
-                    'Open Access policy',
-                    'of the journal?'
+                    'A decision box looks like this'
                 ],
-                yes: 'hasOAPolicy',
-                no: 'checkPolicy'
+                yes: 'decision_box_1_yes',
+                no: 'decision_box_1_no'
             },
             {
-                label: 'hasOAPolicy',
-                type: 'decision',
+                label: 'decision_box_1_yes',
+                type: 'process',
                 text: [
-                    'Does it have Open',
-                    'Access paid option or is it an',
-                    'Open Access journal?'
+                    'A process box looks like this'
                 ],
-                yes: 'CCOffered',
-                no: 'canWrap'
+                yes: 'process_box_1_yes',
+                no: 'process_box_1_no'
+            },
+            {
+                label: 'decision_box_1_no',
+                type: 'finish',
+                text: [
+                    'A finish box looks like this. '
+                ],
+                links: [
+                    {
+                        text: 'You can add links',
+                        url: 'http://www2.warwick.ac.uk/services/library/staff/research/open-access/apply-for-open-access-funding/',
+                        target: '_blank'
+                    }
+                ],
+                tip: {
+                    title: 'Make a tooltip',
+                    text:
+                        [
+                            'Scrolling over this makes',
+                            'a tooltip'
+                        ]
+                }
+            },
+            {
+                label: 'process_box_1_yes',
+                type: 'process',
+                text: [
+                    'A process box looks like this'
+                ],
+                yes: 'end_1',
+                no: 'decision_box_1_no'
+            },
+            {
+                label: 'process_box_1_no',
+                type: 'finish',
+                text: [
+                    'You can link several boxes',
+                    'to the same shape'
+                ],
+                yes: 'end_1',
+                no: 'end_2'
             }
-            // more shapes...
+
         ]);
     </script>
 </body>
