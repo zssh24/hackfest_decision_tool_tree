@@ -1,130 +1,295 @@
 <!DOCTYPE html>
-
-<head>
-
-    <!-- jQuery only required for smooth scrolling -->
-    <script src="example/jquery-2.1.3.min.js"></script>
-    <script src="example/jquery.scrollTo.min.js"></script>
-    <script src="example/svg.js"></script>
-    <script src="dist/flowsvg.min.js"></script>
-
-
-    <style>
-        a:hover {
-            text-decoration: underline;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        #drawing {
-            margin-left: auto;
-            margin-right: auto;
-            width: fit-content;
-            /* Adjusts the width to fit the content inside the div */
-            border: 1px solid #ccc;
-            /* Adds a light border */
-            padding: 20px;
-            /* Adds some padding around the content */
-            background-color: #f9f9f9;
-            /* Light background color */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            /* Adds a subtle shadow */
-            border-radius: 8px;
-            /* Rounds the corners */
-        }
-    </style>
-</head>
+<html lang="en">
 
 <body>
-    <h1>Decision Tool Tree</h1>
-    <div id="drawing"></div>
+    <script src="https://unpkg.com/gojs@3.0.10/release/go.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 
-    <script>
-        // The first shape in the array must be the starting shape of the chart. It must be a decision shape.
-        flowSVG.draw(SVG('drawing').size(900, 1100));
+    <div id="allSampleContent" class="p-4 w-full">
 
-        // config options, more found in src/init.js
-        flowSVG.config({
-            w: 200, // Shape width
-            h: 180, // Shape height
-            interactive: true,
-            showButtons: true,
-            connectorLength: 60,
-            connectorStrokeWidth: 3,
-            scrollto: true,
-            scrollOffset: 300,
-            arrowColour: 'blue',
-            decisionFill: 'firebrick',
-            processFill: 'navajowhite',
-            finishFill: 'seagreen',
-            defaultFontSize: '14'
-        });
+        <script id="code">
+            function init() {
+                myDiagram = new go.Diagram('myDiagramDiv', {
+                    initialContentAlignment: go.Spot.Left,
+                    toolTipDuration: Infinity, // allow people to read the tool tips for as long as they want
+                    allowSelect: false, // the user cannot select any part
+                    // create a TreeLayout for the decision tree
+                    layout: new go.TreeLayout({ arrangement: go.TreeArrangement.FixedRoots })
+                });
 
-        flowSVG.shapes([
-            {
-                label: 'start_decision',
-                type: 'decision',
-                text: [
-                    'A decision box looks like this'
-                ],
-                yes: 'decision_box_1_yes',
-                no: 'decision_box_1_no'
-            },
-            {
-                label: 'decision_box_1_yes',
-                type: 'process',
-                text: [
-                    'A process box looks like this'
-                ],
-                yes: 'process_box_1_yes',
-                no: 'process_box_1_no'
-            },
-            {
-                label: 'decision_box_1_no',
-                type: 'finish',
-                text: [
-                    'A finish box looks like this. '
-                ],
-                links: [
-                    {
-                        text: 'You can add links',
-                        url: 'http://www2.warwick.ac.uk/services/library/staff/research/open-access/apply-for-open-access-funding/',
-                        target: '_blank'
-                    }
-                ],
-                tip: {
-                    title: 'Make a tooltip',
-                    text:
-                        [
-                            'Scrolling over this makes',
-                            'a tooltip'
-                        ]
+                // custom behavior for expanding/collapsing half of the subtree from a node
+                function buttonExpandCollapse(e, port) {
+                    var node = port.part;
+                    node.diagram.startTransaction('expand/collapse');
+                    var portid = port.portId;
+                    node.findLinksOutOf(portid).each((l) => {
+                        if (l.visible) {
+                            // collapse whole subtree recursively
+                            collapseTree(node, portid);
+                        } else {
+                            // only expands immediate children and their links
+                            l.visible = true;
+                            var n = l.getOtherNode(node);
+                            if (n !== null) {
+                                n.location = node.getDocumentPoint(go.Spot.TopRight);
+                                n.visible = true;
+                            }
+                        }
+                    });
+                    myDiagram.toolManager.hideToolTip();
+                    node.diagram.commitTransaction('expand/collapse');
                 }
-            },
-            {
-                label: 'process_box_1_yes',
-                type: 'process',
-                text: [
-                    'A process box looks like this'
-                ],
-                yes: 'end_1',
-                no: 'decision_box_1_no'
-            },
-            {
-                label: 'process_box_1_no',
-                type: 'finish',
-                text: [
-                    'You can link several boxes',
-                    'to the same shape'
-                ],
-                yes: 'end_1',
-                no: 'end_2'
+
+                // recursive function for collapsing complete subtree
+                function collapseTree(node, portid) {
+                    node.findLinksOutOf(portid).each((l) => {
+                        l.visible = false;
+                        var n = l.getOtherNode(node);
+                        if (n !== null) {
+                            n.visible = false;
+                            collapseTree(n, null); // null means all links, not just for a particular portId
+                        }
+                    });
+                }
+
+                // get the text for the tooltip from the data on the object being hovered over
+                function tooltipTextConverter(data) {
+                    var str = '';
+                    var e = myDiagram.lastInput;
+                    var currobj = e.targetObject;
+
+                    // Check if currobj is not null and has a name
+                    if (currobj !== null) {
+                        // Loop through keys of the data object
+                        for (var key in data) {
+                            // Check if the current key is related to tooltips
+                            if (key.endsWith('ToolTip')) {
+                                // Derive button name from the key
+                                var buttonName = key.replace('ToolTip', ''); // Remove 'ToolTip' from the key
+                                // Check if the current object name matches the button name
+                                if (currobj.name === buttonName || (currobj.panel !== null && currobj.panel.name === buttonName)) {
+                                    str = data[key]; // Assign the tooltip text
+                                    break; // Exit loop once we find a match
+                                }
+                            }
+                        }
+                    }
+
+                    return str; // Return the tooltip text or empty string
+                }
+
+                // define tooltips for buttons
+                var tooltipTemplate = go.GraphObject.build('ToolTip', { 'Border.fill': 'whitesmoke', 'Border.stroke': 'lightgray' })
+                    .add(
+                        new go.TextBlock({
+                            font: '8pt Roboto, sans-serif',
+                            wrap: go.Wrap.Fit,
+                            desiredSize: new go.Size(200, NaN),
+                            alignment: go.Spot.Center,
+                            margin: 6
+                        })
+                            .bind('text', '', tooltipTextConverter)
+                    );
+
+                // define the Node template for non-leaf nodes
+                myDiagram.nodeTemplateMap.add(
+                    'decision',
+                    new go.Node('Auto')
+                        .bind('text', 'key')
+                        // define the node's outer shape, which will surround the Vertical Panel
+                        .add(
+                            new go.Shape('Rectangle', { fill: 'whitesmoke', stroke: 'lightgray', desiredSize: new go.Size(300, 250) }), // Increased rectangle size
+                            // define a vertical panel to place the title and buttons
+                            new go.Panel('Vertical', { defaultStretch: go.Stretch.Fill })
+                                .add(
+                                    // Add the title above the buttons
+                                    new go.TextBlock({ font: '16px Roboto, sans-serif', margin: 5 })
+                                        .bind('text', 'title'), // Binding to title property
+                                    // define a vertical Panel to stack the buttons
+                                    new go.Panel('Vertical', { defaultAlignment: go.Spot.Center, margin: 5 })
+                                        .add(
+                                            go.GraphObject.build('Button', { // button A
+                                                name: 'ButtonA',
+                                                click: buttonExpandCollapse,
+                                                toolTip: tooltipTemplate
+                                            })
+                                                .bind('portId', 'a')
+                                                .add(new go.TextBlock({ font: '900 16px Roboto, sans-serif' }).bind('text', 'aText')),
+                                            // end button A
+                                            go.GraphObject.build('Button', { // button B
+                                                name: 'ButtonB',
+                                                click: buttonExpandCollapse,
+                                                toolTip: tooltipTemplate
+                                            })
+                                                .bind('portId', 'b')
+                                                .add(new go.TextBlock({ font: '900 16px Roboto, sans-serif' }).bind('text', 'bText')),
+                                            // end button B
+                                            go.GraphObject.build('Button', { // button C
+                                                name: 'ButtonC',
+                                                click: buttonExpandCollapse,
+                                                toolTip: tooltipTemplate
+                                            })
+                                                .bind('portId', 'c')
+                                                .add(new go.TextBlock({ font: '900 16px Roboto, sans-serif' }).bind('text', 'cText')),
+                                            // end button C
+                                            go.GraphObject.build('Button', { // button D
+                                                name: 'ButtonD',
+                                                click: buttonExpandCollapse,
+                                                toolTip: tooltipTemplate
+                                            })
+                                                .bind('portId', 'd')
+                                                .add(new go.TextBlock({ font: '900 16px Roboto, sans-serif' }).bind('text', 'dText')),
+                                            // end button D
+                                            go.GraphObject.build('Button', { // button E
+                                                name: 'ButtonE',
+                                                click: buttonExpandCollapse,
+                                                toolTip: tooltipTemplate
+                                            })
+                                                .bind('portId', 'e')
+                                                .add(new go.TextBlock({ font: '900 16px Roboto, sans-serif' }).bind('text', 'eText')),
+                                            // end button E
+                                            go.GraphObject.build('Button', { // button F
+                                                name: 'ButtonD',
+                                                click: buttonExpandCollapse,
+                                                toolTip: tooltipTemplate
+                                            })
+                                                .bind('portId', 'f')
+                                                .add(new go.TextBlock({ font: '900 16px Roboto, sans-serif' }).bind('text', 'fText'))
+                                        ) // end Vertical Panel for buttons
+                                ) // end Vertical Panel for title and buttons
+                        )
+                ); // end Node and call to add
+
+                // define the Node template for leaf nodes
+                myDiagram.nodeTemplateMap.add('personality',
+                    new go.Node('Auto')
+                        .bind('text', 'key')
+                        .add(
+                            new go.Shape('Rectangle', { fill: 'whitesmoke', stroke: 'lightgray' }),
+                            new go.TextBlock({
+                                font: '13px Roboto, sans-serif',
+                                wrap: go.Wrap.Fit,
+                                desiredSize: new go.Size(200, NaN),
+                                margin: 5
+                            })
+                                .bind('text', 'text')
+                        )
+                );
+
+                // define the only Link template
+                myDiagram.linkTemplate = new go.Link({ routing: go.Routing.Orthogonal, fromPortId: '' }) // the whole link panel
+                    .bind('fromPortId', 'fromport')
+                    .add(
+                        new go.Shape({ stroke: 'lightblue', strokeWidth: 2 }) // the link shape
+                    );
+
+                // create the model for the decision tree
+                var model = new go.GraphLinksModel({ linkFromPortIdProperty: 'fromport' });
+                // set up the model with the node and link data
+                makeNodes(model);
+                makeLinks(model);
+                myDiagram.model = model;
+
+                // make all but the start node invisible
+                myDiagram.nodes.each((n) => {
+                    if (n.text !== 'start') n.visible = false;
+                });
+                myDiagram.links.each((l) => {
+                    l.visible = false;
+                });
             }
 
-        ]);
-    </script>
+            function makeNodes(model) {
+                var nodeDataArray = [
+                    { key: 'start', title: 'I am a' }, // the root node
+
+                    // intermediate nodes: decisions on personality characteristics
+                    { key: 'a', title: 'Gender: Male' },
+                    { key: 'b', title: 'Gender: Female' },
+                    { key: 'c', title: 'Gender: Transman' },
+                    { key: 'd', title: 'Gender: Transwoman' },
+                    { key: 'e', title: 'Gender: Non-binary' },
+                    { key: 'f', title: 'Gender: Other' },
+
+                    { key: 'g', title: 'More about Men' },
+                    { key: 'h', title: 'More about Women' },
+                    { key: 'i', title: 'More about Transmen' },
+                    { key: 'j', title: 'More about Transwomen' },
+                    { key: 'k', title: 'Both Genders' },
+                    { key: 'l', title: 'All Genders' },
+
+                ];
+
+                // Updating node definitions
+                for (var i = 0; i < nodeDataArray.length; i++) {
+                    var d = nodeDataArray[i];
+                    if (d.key === 'start') {
+                        d.category = 'decision';
+                        d.a = 'a';
+                        d.aText = 'Man';
+                        d.b = 'b';
+                        d.bText = 'Woman';
+                        d.c = 'c';
+                        d.cText = 'Transman';
+                        d.d = 'd';
+                        d.dText = 'Transwoman';
+                        d.e = 'e';
+                        d.eText = 'Non-binary person';
+                        d.f = 'f';
+                        d.fText = 'Other';
+                    } else {
+                        // Existing cases
+                        switch (d.key.length) {
+                            case 1:
+                                d.category = 'decision';
+                                d.a = 'g';
+                                d.aText = 'Men';
+                                d.b = 'h';
+                                d.bText = 'Women';
+                                d.c = 'i';
+                                d.cText = 'Transmen';
+                                d.d = 'j';
+                                d.dText = 'Transwomen';
+                                d.e = 'k';
+                                d.eText = 'Both';
+                                d.f = 'l';
+                                d.fText = 'All genders';
+                                break;
+                            case 2:
+                                // Your existing logic for nodes with key length 2
+                                break;
+
+                            default:
+                                d.category = 'personality';
+                                break;
+                        }
+                    }
+                }
+                model.nodeDataArray = nodeDataArray;
+            }
+
+            function makeLinks(model) {
+                var linkDataArray = [];
+                var nda = model.nodeDataArray;
+                for (var i = 0; i < nda.length; i++) {
+                    var key = nda[i].key;
+                    if (key === 'start' || key.length === 0) continue;
+                    var prefix = key.slice(0, key.length - 1);
+                    var letter = key.charAt(key.length - 1);
+                    if (prefix.length === 0) prefix = 'start';
+                    var obj = { from: prefix, fromport: letter, to: key };
+                    linkDataArray.push(obj);
+                }
+                model.linkDataArray = linkDataArray;
+            }
+
+            // run the initialization function after the page loads
+            window.addEventListener('DOMContentLoaded', init);
+        </script>
+
+        <div id="myDiagramDiv" style="border: solid 1px black; width: 800px; height: 600px"></div>
+    </div>
 </body>
 
 </html>
