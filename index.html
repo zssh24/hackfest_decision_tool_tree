@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
     <script src="https://unpkg.com/gojs@3.0.10/release/go.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
@@ -38,7 +39,7 @@
                 // Define tooltips for buttons
                 var tooltipTemplate = go.GraphObject.make('ToolTip',
                     go.GraphObject.make(go.TextBlock, {
-                        font: '8pt Roboto, sans-serif',
+                        font: '26pt Roboto, sans-serif',
                         wrap: go.TextBlock.WrapFit,
                         desiredSize: new go.Size(200, NaN),
                         alignment: go.Spot.Center,
@@ -50,32 +51,94 @@
                 // Define the Node template for non-leaf nodes
                 myDiagram.nodeTemplateMap.add('decision',
                     go.GraphObject.make(go.Node, 'Auto',
-                        go.GraphObject.make(go.Shape, 'Rectangle', { fill: 'whitesmoke', stroke: 'lightgray', desiredSize: new go.Size(300, 250) }),
-                        go.GraphObject.make(go.Panel, 'Vertical', { defaultStretch: go.GraphObject.Fill },
-                            go.GraphObject.make(go.TextBlock, { font: '16px Roboto, sans-serif', margin: 5 },
+                        // Each decision box
+                        go.GraphObject.make(go.Shape, 'RoundedRectangle', { fill: 'yellow', stroke: 'black', desiredSize: new go.Size(300, 250) }),
+                        go.GraphObject.make(go.Panel, 'Vertical', {
+                            defaultStretch: go.GraphObject.Fill
+                        },
+                            // Title for each decision block
+                            go.GraphObject.make(go.TextBlock, {
+                                font: '900 16px Roboto, sans-serif',
+                                background: "lightcyan",
+                                margin: 0,
+                                textAlign: "center"
+                            },
                                 new go.Binding('text', 'title')),
-                            go.GraphObject.make(go.Panel, 'Vertical', { defaultAlignment: go.Spot.Center, margin: 5 },
-                                go.GraphObject.make('Button', { click: buttonExpandCollapse, toolTip: tooltipTemplate },
+                            // Object which holds the buttons    
+                            go.GraphObject.make(go.Panel, 'Vertical', {
+                                defaultAlignment: go.Spot.Center,
+                                margin: 5
+                            },
+                                go.GraphObject.make('Button', {
+                                    click: buttonExpandCollapse, 
+                                    toolTip: tooltipTemplate,
+                                    "ButtonBorder.fill": "white",
+                                    "_buttonFillOver": "cyan",
+                                    width: 150
+                                    },
                                     new go.Binding('portId', 'a'),
-                                    go.GraphObject.make(go.TextBlock, { font: '900 16px Roboto, sans-serif' },
-                                        new go.Binding('text', 'aText'))),
-                                go.GraphObject.make('Button', { click: buttonExpandCollapse, toolTip: tooltipTemplate },
+                                    go.GraphObject.make(go.TextBlock, {
+                                        font: '900 16px Roboto, sans-serif',
+                                        stroke: "black"
+                                    },
+                                    new go.Binding('text', 'aText'))),
+                                
+                                go.GraphObject.make('Button', {
+                                    click: buttonExpandCollapse, 
+                                    toolTip: tooltipTemplate,
+                                    "ButtonBorder.fill": "white",
+                                    "_buttonFillOver": "cyan",
+                                    width: 150
+                                    },
                                     new go.Binding('portId', 'b'),
-                                    go.GraphObject.make(go.TextBlock, { font: '900 16px Roboto, sans-serif' },
-                                        new go.Binding('text', 'bText'))),
-                                go.GraphObject.make('Button', { click: buttonExpandCollapse, toolTip: tooltipTemplate },
+                                    go.GraphObject.make(go.TextBlock, { 
+                                        font: '900 16px Roboto, sans-serif' 
+                                    },
+                                    new go.Binding('text', 'bText'))),
+                                
+                                go.GraphObject.make('Button', { 
+                                    click: buttonExpandCollapse, 
+                                    toolTip: tooltipTemplate,
+                                    "ButtonBorder.fill": "white",
+                                    "_buttonFillOver": "cyan",
+                                    width: 150
+                                    },
                                     new go.Binding('portId', 'c'),
-                                    go.GraphObject.make(go.TextBlock, { font: '900 16px Roboto, sans-serif' },
-                                        new go.Binding('text', 'cText'))),
-                                go.GraphObject.make('Button', { click: buttonExpandCollapse, toolTip: tooltipTemplate },
-                                    new go.Binding('portId', 'd'),
-                                    go.GraphObject.make(go.TextBlock, { font: '900 16px Roboto, sans-serif' },
+                                    go.GraphObject.make(go.TextBlock, { 
+                                        font: '900 16px Roboto, sans-serif' 
+                                    },
+                                    new go.Binding('text', 'cText'))),
+                                
+                                    go.GraphObject.make('Button', { 
+                                        toolTip: tooltipTemplate,
+                                        "ButtonBorder.fill": "white",
+                                        "_buttonFillOver": "cyan",
+                                    width: 150
+                                        },
+                                        new go.Binding('portId', 'd'),
+                                        go.GraphObject.make(go.TextBlock, { 
+                                            font: '900 16px Roboto, sans-serif' 
+                                        },
                                         new go.Binding('text', 'dText'))),
-                                go.GraphObject.make('Button', { click: buttonExpandCollapse, toolTip: tooltipTemplate },
-                                    new go.Binding('portId', 'e'),
-                                    go.GraphObject.make(go.TextBlock, { font: '900 16px Roboto, sans-serif' },
+                                
+                                    go.GraphObject.make('Button', { 
+                                        toolTip: tooltipTemplate,
+                                        "ButtonBorder.fill": "white",
+                                        "_buttonFillOver": "cyan",
+                                    width: 150 
+                                        },
+                                        new go.Binding('portId', 'e'),
+                                        go.GraphObject.make(go.TextBlock, { 
+                                            font: '900 16px Roboto, sans-serif' 
+                                        },
                                         new go.Binding('text', 'eText'))),
-                                go.GraphObject.make('Button', { click: buttonExpandCollapse, toolTip: tooltipTemplate },
+                                
+                                go.GraphObject.make('Button', { 
+                                    toolTip: tooltipTemplate,
+                                    "ButtonBorder.fill": "white",
+                                    "_buttonFillOver": "cyan",
+                                    width: 150 
+                                },
                                     new go.Binding('portId', 'f'),
                                     go.GraphObject.make(go.TextBlock, { font: '900 16px Roboto, sans-serif' },
                                         new go.Binding('text', 'fText')))
@@ -98,8 +161,8 @@
                     )
                 );
 
-                // Define the only Link template
-                myDiagram.linkTemplate = go.GraphObject.make(go.Link, { routing: go.Link.Orthogonal, fromPortId: '' },
+                // Define the Link template
+                myDiagram.linkTemplate = go.GraphObject.make(go.Link, { routing: go.Link.Orthogonal },
                     new go.Binding('fromPortId', 'fromport'),
                     go.GraphObject.make(go.Shape, { stroke: 'lightblue', strokeWidth: 2 })
                 );
@@ -121,6 +184,7 @@
 
             function makeNodes(model) {
                 var nodeDataArray = [
+                    // 1st Level
                     { key: 'start', title: 'I am a:' },
                     { key: 'a', title: 'I have sex with:' },
                     { key: 'b', title: 'I have sex with:' },
@@ -128,17 +192,134 @@
                     { key: 'd', title: 'I have sex with:' },
                     { key: 'e', title: 'I have sex with:' },
                     { key: 'f', title: 'I have sex with:' },
-                    { key: 'a1', title: 'What kind of sex do you have:' },
-                    { key: 'b1', title: 'What kind of sex do you have:' },
-                    { key: 'c1', title: 'What kind of sex do you have:' },
-                    { key: 'd1', title: 'What kind of sex do you have:' },
-                    { key: 'e1', title: 'What kind of sex do you have:' },
-                    { key: 'f1', title: 'What kind of sex do you have:' },
-                    { key: 'a21', title: 'How often do you or your partner/s wear a condom during sex?' },
-                    { key: 'b21', title: 'How often do you or your partner/s wear a condom during sex?' },
-                    { key: 'c21', title: 'How often do you or your partner/s wear a condom during sex?' },
-                    { key: 'd21', title: 'How often do you or your partner/s wear a condom during sex?' },
-                    { key: 'e21', title: 'How often do you or your partner/s wear a condom during sex?' }
+
+                    // 2nd Level
+                    { key: 'aa', title: 'What kind of sex do you have:' },
+                    { key: 'ab', title: 'What kind of sex do you have:' },
+                    { key: 'ac', title: 'What kind of sex do you have:' },
+                    { key: 'ad', title: 'What kind of sex do you have:' },
+                    { key: 'ae', title: 'What kind of sex do you have:' },
+                    { key: 'af', title: 'What kind of sex do you have:' },
+                    { key: 'ba', title: 'What kind of sex do you have:' },
+                    { key: 'bb', title: 'What kind of sex do you have:' },
+                    { key: 'bc', title: 'What kind of sex do you have:' },
+                    { key: 'bd', title: 'What kind of sex do you have:' },
+                    { key: 'be', title: 'What kind of sex do you have:' },
+                    { key: 'ca', title: 'What kind of sex do you have:' },
+                    { key: 'cb', title: 'What kind of sex do you have:' },
+                    { key: 'cc', title: 'What kind of sex do you have:' },
+                    { key: 'cd', title: 'What kind of sex do you have:' },
+                    { key: 'ce', title: 'What kind of sex do you have:' },
+                    { key: 'cf', title: 'What kind of sex do you have:' },
+                    { key: 'da', title: 'What kind of sex do you have:' },
+                    { key: 'db', title: 'What kind of sex do you have:' },
+                    { key: 'dc', title: 'What kind of sex do you have:' },
+                    { key: 'dd', title: 'What kind of sex do you have:' },
+                    { key: 'de', title: 'What kind of sex do you have:' },
+                    { key: 'df', title: 'What kind of sex do you have:' },
+                    { key: 'ea', title: 'What kind of sex do you have:' },
+                    { key: 'eb', title: 'What kind of sex do you have:' },
+                    { key: 'ec', title: 'What kind of sex do you have:' },
+                    { key: 'ed', title: 'What kind of sex do you have:' },
+                    { key: 'ee', title: 'What kind of sex do you have:' },
+                    { key: 'ef', title: 'What kind of sex do you have:' },
+                    { key: 'fa', title: 'What kind of sex do you have:' },
+                    { key: 'fb', title: 'What kind of sex do you have:' },
+                    { key: 'fc', title: 'What kind of sex do you have:' },
+                    { key: 'fd', title: 'What kind of sex do you have:' },
+                    { key: 'fe', title: 'What kind of sex do you have:' },
+                    { key: 'ff', title: 'What kind of sex do you have:' },
+
+                    // 3rd Level
+                    { key: 'aaa', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aab', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aac', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aad', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aae', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aaf', title: 'How often do you or your partner/s wear a condom during sex?' },
+
+                    { key: 'aba', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'abb', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'abc', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'abd', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'abe', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'abf', title: 'How often do you or your partner/s wear a condom during sex?' },
+
+                    { key: 'aca', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'acb', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'acc', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'acd', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'ace', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'acf', title: 'How often do you or your partner/s wear a condom during sex?' },
+
+                    { key: 'ada', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'adb', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'adc', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'add', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'ade', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'adf', title: 'How often do you or your partner/s wear a condom during sex?' },
+
+                    { key: 'aea', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aeb', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aec', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aed', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aee', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aef', title: 'How often do you or your partner/s wear a condom during sex?' },
+
+                    { key: 'afa', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'afb', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'afc', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'afd', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'afe', title: 'How often do you or your partner/s wear a condom during sex?' },
+                    { key: 'aff', title: 'How often do you or your partner/s wear a condom during sex?' },
+
+                    // 4th Level
+                    { key: 'aaaa', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+                    { key: 'aaab', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+                    { key: 'aaac', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+                    { key: 'aaad', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+                    { key: 'aaae', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+                    { key: 'aaaf', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+
+                    { key: 'aaaa', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+                    { key: 'aaab', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+                    { key: 'aaac', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+                    { key: 'aaad', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+                    { key: 'aaae', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+                    { key: 'aaaf', title: 'Do you inject drugs, or use Crystal Meth, Mephedrone or GHB/GBL during sex?' },
+
+                    // 5th Level
+                    { key: 'aaaaa', title: 'Do you have sex with others in exchange for money or other things such as food or accommodation?' },
+                    { key: 'bbbbb', title: 'Do you have sex with others in exchange for money or other things such as food or accommodation?' },
+                    { key: 'ccccc', title: 'Do you have sex with others in exchange for money or other things such as food or accommodation?' },
+                    { key: 'ddddd', title: 'Do you have sex with others in exchange for money or other things such as food or accommodation?' },
+                    { key: 'eeeee', title: 'Do you have sex with others in exchange for money or other things such as food or accommodation?' },
+                    { key: 'fffff', title: 'Do you have sex with others in exchange for money or other things such as food or accommodation?' },
+
+                    // 6th Level
+                    { key: 'aaaaaa', title: 'Have you recently arrived from or visit/stay in any of the following countries and had/have sex without using condoms while there?' },
+                    { key: 'bbbbbb', title: 'Have you recently arrived from or visit/stay in any of the following countries and had/have sex without using condoms while there?' },
+                    { key: 'cccccc', title: 'Have you recently arrived from or visit/stay in any of the following countries and had/have sex without using condoms while there?' },
+                    { key: 'dddddd', title: 'Have you recently arrived from or visit/stay in any of the following countries and had/have sex without using condoms while there?' },
+                    { key: 'eeeeee', title: 'Have you recently arrived from or visit/stay in any of the following countries and had/have sex without using condoms while there?' },
+                    { key: 'ffffff', title: 'Have you recently arrived from or visit/stay in any of the following countries and had/have sex without using condoms while there?' },
+
+                    // 7th Level
+                    { key: 'aaaaaaa', title: 'Are the people you have sex with from a population group or country that is more affected by HIV' },
+                    { key: 'bbbbbbb', title: 'Are the people you have sex with from a population group or country that is more affected by HIV' },
+                    { key: 'ccccccc', title: 'Are the people you have sex with from a population group or country that is more affected by HIV' },
+                    { key: 'ddddddd', title: 'Are the people you have sex with from a population group or country that is more affected by HIV' },
+                    { key: 'eeeeeee', title: 'Are the people you have sex with from a population group or country that is more affected by HIV' },
+                    { key: 'fffffff', title: 'Are the people you have sex with from a population group or country that is more affected by HIV' },
+
+                    //8th Level
+                    { key: 'aaaaaaaa', title: 'Result' },
+                    { key: 'bbbbbbbb', title: 'Result' },
+                    { key: 'cccccccc', title: 'Result' },
+                    { key: 'dddddddd', title: 'Result' },
+                    { key: 'eeeeeeee', title: 'Result' },
+                    { key: 'ffffffff', title: 'Result' },
+
                 ];
 
                 for (var i = 0; i < nodeDataArray.length; i++) {
@@ -155,21 +336,53 @@
                         switch (d.key.length) {
                             case 1:
                                 d.category = 'decision';
-                                d.a = 'a1'; d.aText = 'Men';
-                                d.b = 'b1'; d.bText = 'Women';
-                                d.c = 'c1'; d.cText = 'Transmen';
-                                d.d = 'd1'; d.dText = 'Transwomen';
-                                d.e = 'e1'; d.eText = 'Non-binary people';
-                                d.f = 'f1'; d.fText = 'Other';
+                                d.a = 'a'; d.aText = 'Men';
+                                d.b = 'b'; d.bText = 'Women';
+                                d.c = 'c'; d.cText = 'Transmen';
+                                d.d = 'd'; d.dText = 'Transwomen';
+                                d.e = 'e'; d.eText = 'Non-binary people';
+                                d.f = 'f'; d.fText = 'Other';
                                 break;
                             case 2:
                                 d.category = 'decision';
-                                d.a = 'a21'; d.aText = 'Never';
-                                d.b = 'b21'; d.bText = 'Rarely';
-                                d.c = 'c21'; d.cText = 'Sometimes';
-                                d.d = 'd21'; d.dText = 'Often';
-                                d.e = 'e21'; d.eText = 'Always';
-                                d.f = 'f21'; d.fText = 'Not Applicable';
+                                d.a = 'a'; d.aText = 'Receptive anal';
+                                d.b = 'b'; d.bText = 'Insertive anal';
+                                d.c = 'c'; d.cText = 'Receptive vaginal/frontal';
+                                d.d = 'd'; d.dText = 'Incertive vaginal/frontal';
+                                d.e = 'e'; d.eText = 'Oral';
+                                d.f = 'f'; d.fText = 'Other non-penetrative';
+                                break;
+                            case 3:
+                                d.category = 'decision';
+                                d.a = 'a'; d.aText = 'Very likely / Always';
+                                d.b = 'b'; d.bText = 'Sometimes';
+                                d.c = 'c'; d.cText = 'Unlikely / Probably not';
+                                break;
+                            case 4:
+                                d.category = 'decision';
+                                d.a = 'a'; d.aText = 'Yes';
+                                d.b = 'b'; d.bText = 'No';
+                                break;
+                            case 5:
+                                d.category = 'decision';
+                                d.a = 'a'; d.aText = 'Yes';
+                                d.b = 'b'; d.bText = 'No';
+                                break;
+                            case 6:
+                                d.category = 'decision';
+                                d.a = 'a'; d.aText = 'Yes';
+                                d.b = 'b'; d.bText = 'No';
+                                break;
+                            case 7:
+                                d.category = 'decision';
+                                d.a = 'a'; d.aText = 'Yes';
+                                d.b = 'b'; d.bText = 'No';
+                                break;
+                            case 8:
+                                d.category = 'personality';
+                                d.text = d.title;
+                                // d.a = 'a'; d.aText = 'Yes';
+                                // d.b = 'b'; d.bText = 'No';
                                 break;
                             default:
                                 d.category = 'personality';
@@ -183,25 +396,17 @@
 
             function makeLinks(model) {
                 var linkDataArray = [];
-
-                // Define the number of options per block (e.g., 6 options per decision point)
-                const options = ['a', 'b', 'c', 'd', 'e', 'f'];
-
-                // Create links from 'start' to the first set of nodes (e.g., 'a', 'b', 'c', etc.)
-                options.forEach(option => {
-                    linkDataArray.push({ from: 'start', to: option, fromport: option });
-                });
-
-                // Create links for the second level (e.g., 'a1', 'b1', etc.)
-                options.forEach(option => {
-                    linkDataArray.push({ from: option, to: option + '1', fromport: option });
-                });
-
-                // Create links for the third level (e.g., 'a21', 'b21', etc.)
-                options.forEach(option => {
-                    linkDataArray.push({ from: option + '1', to: option + '21', fromport: option });
-                });
-
+                var nda = model.nodeDataArray;
+                for (var i = 0; i < nda.length; i++) {
+                    var key = nda[i].key;
+                    if (key === 'start' || key.length === 0) continue;
+                    // Ensure the prefix and letter logic is correctly applied
+                    var prefix = key.slice(0, key.length - 1);
+                    var letter = key.charAt(key.length - 1);
+                    if (prefix.length === 0) prefix = 'start'; // Ensure the prefix for the start node is correct
+                    var obj = { from: prefix, fromport: letter, to: key };
+                    linkDataArray.push(obj);
+                }
                 model.linkDataArray = linkDataArray;
             }
 
