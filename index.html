@@ -13,7 +13,6 @@
 
         <img src="logo.png" alt="Company Logo" width="200" height="70" style="display: block; margin: 0 auto;">
 
-
         <script id="code">
             function init() {
                 var myDiagram = new go.Diagram('myDiagramDiv', {
@@ -24,7 +23,7 @@
                         arrangement: go.TreeArrangement.FixedRoots
                     })
                 });
-
+                
                 function buttonExpandCollapse(e, port) {
                     var node = port.part;
                     node.diagram.startTransaction('expand/collapse');
@@ -96,7 +95,7 @@
                 const panelStyle = {
                     defaultStretch: go.GraphObject.Fill,
                     defaultAlignment: go.Spot.Center,
-                    margin: 5
+                    margin: 0
                 };
 
                 const buttonpanelStyle = {
@@ -105,12 +104,12 @@
                 };
 
                 const resultPanelStyle = {
-                    width: 300,
-                    height: 300,
-                    margin: 3,
+                    width: 250,
+                    height: 250,
+                    margin: 0,
                     fill: '#ffffff', 
                     stroke: '#1b2434',          
-                    strokeWidth: 2          
+                    strokeWidth: 3          
                 };
 
                 const resultTextStyle = {
@@ -315,7 +314,7 @@
                     go.GraphObject.make(go.Shape,
                         {
                             stroke: '#1b2434',
-                            strokeWidth: 3
+                            strokeWidth: 10
                         })
                 );
 
@@ -464,6 +463,7 @@
                 height: 900px;
                 background: #73dbdb;
                 "></div>
+                
     </div>
 </body>
 
