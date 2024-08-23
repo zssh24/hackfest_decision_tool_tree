@@ -1,0 +1,37 @@
+[
+    { "key": "start", "title": "Have you been diagnosed with HIV?" },
+    { "key": "a", "title": "How many sexual partners have you had in the last 12 months?" },
+    { "key": "b", "title": "How many sexual partners have you had in the last 12 months?" },
+    { "key": "c", "title": "How many sexual partners have you had in the last 12 months?" },
+
+    { "key": "aa", "title": "Result 1" },
+    { "key": "ab", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "ac", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "ad", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "ae", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "ba", "title": "Result 1" },
+    { "key": "bb", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "bc", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "bd", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "be", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "ca", "title": "Result 1" },
+    { "key": "cb", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "cc", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "cd", "title": "How often do you or your partner(s) wear a condom during sex?" },
+    { "key": "ce", "title": "How often do you or your partner(s) wear a condom during sex?" },
+
+    { "key": "aba", "title": "Result 2" },
+    { "key": "abb", "title": "Are any of your partners living with HIV?" },
+    { "key": "abc", "title": "Are any of your partners living with HIV?" },
+    { "key": "abd", "title": "Are any of your partners living with HIV?" },
+    { "key": "bba", "title": "Result 2" },
+    { "key": "bbb", "title": "Are any of your partners living with HIV?" },
+    { "key": "bbc", "title": "Are any of your partners living with HIV?" },
+    { "key": "bbd", "title": "Are any of your partners living with HIV?" },
+    { "key": "cba", "title": "Result 2" },
+    { "key": "cbb", "title": "Are any of your partners living with HIV?" },
+    { "key": "cbc", "title": "Are any of your partners living with HIV?" },
+    { "key": "cbd", "title": "Are any of your partners living with HIV?" }
+
+
+]
