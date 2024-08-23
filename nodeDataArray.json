@@ -31,7 +31,35 @@
     { "key": "cba", "title": "Result 2" },
     { "key": "cbb", "title": "Are any of your partners living with HIV?" },
     { "key": "cbc", "title": "Are any of your partners living with HIV?" },
-    { "key": "cbd", "title": "Are any of your partners living with HIV?" }
+    { "key": "cbd", "title": "Are any of your partners living with HIV?" },
+
+    { "key": "abba", "title": "Are they on treatment with undetectable viral loads? (this means that....)" },
+    { "key": "abbb", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "abbc", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "abca", "title": "Are they on treatment with undetectable viral loads? (this means that....)" },
+    { "key": "abcb", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "abcc", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "abda", "title": "Are they on treatment with undetectable viral loads? (this means that....)" },
+    { "key": "abdb", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "abdc", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "bbba", "title": "Are they on treatment with undetectable viral loads? (this means that....)" },
+    { "key": "bbbb", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "bbbc", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "bbca", "title": "Are they on treatment with undetectable viral loads? (this means that....)" },
+    { "key": "bbcb", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "bbcc", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "bbda", "title": "Are they on treatment with undetectable viral loads? (this means that....)" },
+    { "key": "bbdb", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "bbdc", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "cbba", "title": "Are they on treatment with undetectable viral loads? (this means that....)" },
+    { "key": "cbbb", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "cbbc", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "cbca", "title": "Are they on treatment with undetectable viral loads? (this means that....)" },
+    { "key": "cbcb", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "cbcc", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "cbda", "title": "Are they on treatment with undetectable viral loads? (this means that....)" },
+    { "key": "cbdb", "title": "Do any of your (male) partners have sex with men?" },
+    { "key": "cbdc", "title": "Do any of your (male) partners have sex with men?" }
 
 
 ]

@@ -53,6 +53,61 @@
                         new go.Binding('text', '', tooltipTextConverter))
                 );
 
+                // Define the Node template for non-leaf nodes (2 buttons)
+                myDiagram.nodeTemplateMap.add('2_decision',
+                    go.GraphObject.make(go.Node, 'Auto',
+                        // Each decision box
+                        go.GraphObject.make(go.Shape, 'RoundedRectangle', { fill: 'yellow', stroke: 'black', desiredSize: new go.Size(300, 250) }),
+                        go.GraphObject.make(go.Panel, 'Vertical', {
+                            defaultStretch: go.GraphObject.Fill
+                        },
+                            // Title for each decision block
+                            go.GraphObject.make(go.TextBlock, {
+                                font: '900 16px Roboto, sans-serif',
+                                background: "lightcyan",
+                                margin: 0,
+                                textAlign: "center",
+                                wrap: go.TextBlock.WrapFit,
+                                desiredSize: new go.Size(280, NaN)
+                            },
+                                new go.Binding('text', 'title')),
+                            // Object which holds the buttons    
+                            go.GraphObject.make(go.Panel, 'Vertical', {
+                                defaultAlignment: go.Spot.Center,
+                                margin: 5
+                            },
+                                go.GraphObject.make('Button', {
+                                    click: buttonExpandCollapse,
+                                    toolTip: tooltipTemplate,
+                                    "ButtonBorder.fill": "white",
+                                    "_buttonFillOver": "cyan",
+                                    width: 150
+                                },
+                                    new go.Binding('portId', 'a'),
+                                    go.GraphObject.make(go.TextBlock, {
+                                        font: '900 16px Roboto, sans-serif',
+                                        stroke: "black"
+                                    },
+                                        new go.Binding('text', 'aText'))),
+
+                                go.GraphObject.make('Button', {
+                                    click: buttonExpandCollapse,
+                                    toolTip: tooltipTemplate,
+                                    "ButtonBorder.fill": "white",
+                                    "_buttonFillOver": "cyan",
+                                    width: 150
+                                },
+                                    new go.Binding('portId', 'b'),
+                                    go.GraphObject.make(go.TextBlock, {
+                                        font: '900 16px Roboto, sans-serif'
+                                    },
+                                        new go.Binding('text', 'bText')))
+                            )
+                        )
+                    )
+                );
+
+
                 // Define the Node template for non-leaf nodes (3 buttons)
                 myDiagram.nodeTemplateMap.add('3_decision',
                     go.GraphObject.make(go.Node, 'Auto',
@@ -476,19 +531,27 @@
                                     d.category = 'personality';
                                     d.text = 'Probably don\'t need. But if you\'re expecting to have condomless sex with...';
                                 } else {
-                                d.category = '3_decision';
-                                d.a = 'a'; d.aText = 'Most of the time';
-                                d.b = 'b'; d.bText = 'Sometimes';
-                                d.c = 'c'; d.cText = 'Not usually or never';
+                                    d.category = '3_decision';
+                                    d.a = 'a'; d.aText = 'Most of the time';
+                                    d.b = 'b'; d.bText = 'Sometimes';
+                                    d.c = 'c'; d.cText = 'Not usually or never';
                                 }
                                 break;
                             case 4:
                                 const c4_lc = d.key.slice(-1);
                                 if (c4_lc === 'a') {
-                                d.category = 'decision';
-                                d.a = 'a'; d.aText = 'Yes';
-                                d.b = 'b'; d.bText = 'No';
+                                    d.category = '3_decision';
+                                    d.a = 'a'; d.aText = 'Yes';
+                                    d.b = 'b'; d.bText = 'No';
+                                    d.c = 'c'; d.cText = 'I\m not sure';
+                                } else {
+                                    d.category = '3_decision';
+                                    d.a = 'a'; d.aText = 'Yes';
+                                    d.b = 'b'; d.bText = 'No';
+                                    d.c = 'c'; d.cText = 'I\m not sure';
+                                }
                                 break;
+                            
                             default:
                                 d.category = 'personality';
                                 d.text = d.title;
