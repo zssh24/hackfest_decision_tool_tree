@@ -10,6 +10,11 @@
 
 <body>
     <div id="allSampleContent" class="p-4 w-full">
+
+        <picture>
+            <img src="logo.png" alt="Company Logo" , width="200" height="70">
+
+        </picture>
         <script id="code">
             function init() {
                 var myDiagram = new go.Diagram('myDiagramDiv', {
@@ -25,8 +30,6 @@
                     var node = port.part;
                     node.diagram.startTransaction('expand/collapse');
                     var portid = port.portId;
-                    // Log which button has been pressed
-                    console.log(`Button pressed: ${portid}`);
 
 
                     node.findLinksOutOf(portid).each((l) => {
@@ -53,122 +56,123 @@
                         new go.Binding('text', '', tooltipTextConverter))
                 );
 
+                // Styling
+                const buttonStyle = {
+                    click: buttonExpandCollapse,
+                    toolTip: tooltipTemplate,
+                    "ButtonBorder.fill": "#1b2434",
+                    "_buttonFillOver": "black",
+                    "ButtonBorder.stroke": "#1b2434",
+                    "ButtonBorder.strokeWidth": 2,
+                    width: 150,
+                    height: 30,
+                    margin: 3
+                };
+
+                const textBlockStyle = {
+                    font: '16px Roboto, sans-serif',
+                    stroke: "#ffffff",
+                    textAlign: "center",
+                    wrap: go.TextBlock.WrapFit,
+                    desiredSize: new go.Size(280, NaN),
+                    margin: 0
+                };
+
+                const titleStyle = {
+                    font: '900 16px Roboto, sans-serif',
+                    stroke: '#1b2434',
+                    textAlign: "center",
+                    wrap: go.TextBlock.WrapFit,
+                    desiredSize: new go.Size(280, NaN),
+                    margin: 0
+                };
+
+                const shapeStyle = {
+                    fill: '#73dbdb',
+                    stroke: '#1b2434',
+                    strokeWidth: 3,
+                    desiredSize: new go.Size(300, 250)
+                };
+
+                const panelStyle = {
+                    defaultStretch: go.GraphObject.Fill,
+                    defaultAlignment: go.Spot.Center,
+                    margin: 5
+                };
+
+                const buttonpanelStyle = {
+                    defaultAlignment: go.Spot.Center,
+                    margin: 5
+                };
+
+                const resultPanelStyle = {
+                    width: 300,
+                    height: 300,
+                    margin: 3,
+                    fill: '#ffffff', 
+                    stroke: '#1b2434',          
+                    strokeWidth: 2          
+                };
+
+                const resultTextStyle = {
+                    font: '16px Roboto, sans-serif',
+                    stroke: "black",
+                    textAlign: "center",
+                    wrap: go.TextBlock.WrapFit,
+                    desiredSize: new go.Size(280, NaN),
+                    margin: 0
+                };
+
+
                 // Define the Node template for non-leaf nodes (2 buttons)
                 myDiagram.nodeTemplateMap.add('2_decision',
                     go.GraphObject.make(go.Node, 'Auto',
                         // Each decision box
-                        go.GraphObject.make(go.Shape, 'RoundedRectangle', { fill: 'yellow', stroke: 'black', desiredSize: new go.Size(300, 250) }),
-                        go.GraphObject.make(go.Panel, 'Vertical', {
-                            defaultStretch: go.GraphObject.Fill
-                        },
+                        go.GraphObject.make(go.Shape, 'RoundedRectangle', shapeStyle),
+                        go.GraphObject.make(go.Panel, 'Vertical', panelStyle,
                             // Title for each decision block
-                            go.GraphObject.make(go.TextBlock, {
-                                font: '900 16px Roboto, sans-serif',
-                                background: "lightcyan",
-                                margin: 0,
-                                textAlign: "center",
-                                wrap: go.TextBlock.WrapFit,
-                                desiredSize: new go.Size(280, NaN)
-                            },
+                            go.GraphObject.make(go.TextBlock, titleStyle,
                                 new go.Binding('text', 'title')),
                             // Object which holds the buttons    
-                            go.GraphObject.make(go.Panel, 'Vertical', {
-                                defaultAlignment: go.Spot.Center,
-                                margin: 5
-                            },
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                            go.GraphObject.make(go.Panel, 'Vertical', buttonpanelStyle,
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'a'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif',
-                                        stroke: "black"
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle, // <-- Corrected line
                                         new go.Binding('text', 'aText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'b'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'bText')))
                             )
                         )
                     )
                 );
 
-
                 // Define the Node template for non-leaf nodes (3 buttons)
                 myDiagram.nodeTemplateMap.add('3_decision',
                     go.GraphObject.make(go.Node, 'Auto',
                         // Each decision box
-                        go.GraphObject.make(go.Shape, 'RoundedRectangle', { fill: 'yellow', stroke: 'black', desiredSize: new go.Size(300, 250) }),
-                        go.GraphObject.make(go.Panel, 'Vertical', {
-                            defaultStretch: go.GraphObject.Fill
-                        },
+                        go.GraphObject.make(go.Shape, 'RoundedRectangle', shapeStyle),
+                        go.GraphObject.make(go.Panel, 'Vertical', panelStyle,
                             // Title for each decision block
-                            go.GraphObject.make(go.TextBlock, {
-                                font: '900 16px Roboto, sans-serif',
-                                background: "lightcyan",
-                                margin: 0,
-                                textAlign: "center",
-                                wrap: go.TextBlock.WrapFit,
-                                desiredSize: new go.Size(280, NaN)
-                            },
+                            go.GraphObject.make(go.TextBlock, titleStyle,
                                 new go.Binding('text', 'title')),
                             // Object which holds the buttons    
-                            go.GraphObject.make(go.Panel, 'Vertical', {
-                                defaultAlignment: go.Spot.Center,
-                                margin: 5
-                            },
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                            go.GraphObject.make(go.Panel, 'Vertical', buttonpanelStyle,
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'a'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif',
-                                        stroke: "black"
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'aText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'b'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'bText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'c'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'cText')))
                             )
                         )
@@ -179,76 +183,31 @@
                 myDiagram.nodeTemplateMap.add('4_decision',
                     go.GraphObject.make(go.Node, 'Auto',
                         // Each decision box
-                        go.GraphObject.make(go.Shape, 'RoundedRectangle', { fill: 'yellow', stroke: 'black', desiredSize: new go.Size(300, 250) }),
-                        go.GraphObject.make(go.Panel, 'Vertical', {
-                            defaultStretch: go.GraphObject.Fill
-                        },
+                        go.GraphObject.make(go.Shape, 'RoundedRectangle', shapeStyle),
+                        go.GraphObject.make(go.Panel, 'Vertical', panelStyle,
                             // Title for each decision block
-                            go.GraphObject.make(go.TextBlock, {
-                                font: '900 16px Roboto, sans-serif',
-                                background: "lightcyan",
-                                margin: 0,
-                                textAlign: "center",
-                                wrap: go.TextBlock.WrapFit,
-                                desiredSize: new go.Size(280, NaN)
-                            },
+                            go.GraphObject.make(go.TextBlock, titleStyle,
                                 new go.Binding('text', 'title')),
                             // Object which holds the buttons    
-                            go.GraphObject.make(go.Panel, 'Vertical', {
-                                defaultAlignment: go.Spot.Center,
-                                margin: 5
-                            },
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                            go.GraphObject.make(go.Panel, 'Vertical', buttonpanelStyle,
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'a'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif',
-                                        stroke: "black"
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'aText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'b'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'bText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'c'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'cText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'd'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'dText')))
                             )
                         )
@@ -259,89 +218,36 @@
                 myDiagram.nodeTemplateMap.add('5_decision',
                     go.GraphObject.make(go.Node, 'Auto',
                         // Each decision box
-                        go.GraphObject.make(go.Shape, 'RoundedRectangle', { fill: 'yellow', stroke: 'black', desiredSize: new go.Size(300, 250) }),
-                        go.GraphObject.make(go.Panel, 'Vertical', {
-                            defaultStretch: go.GraphObject.Fill
-                        },
+                        go.GraphObject.make(go.Shape, 'RoundedRectangle', shapeStyle),
+                        go.GraphObject.make(go.Panel, 'Vertical', panelStyle,
                             // Title for each decision block
-                            go.GraphObject.make(go.TextBlock, {
-                                font: '900 16px Roboto, sans-serif',
-                                background: "lightcyan",
-                                margin: 0,
-                                textAlign: "center",
-                                wrap: go.TextBlock.WrapFit,
-                                desiredSize: new go.Size(280, NaN)
-                            },
+                            go.GraphObject.make(go.TextBlock, titleStyle,
                                 new go.Binding('text', 'title')),
                             // Object which holds the buttons    
-                            go.GraphObject.make(go.Panel, 'Vertical', {
-                                defaultAlignment: go.Spot.Center,
-                                margin: 5
-                            },
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                            go.GraphObject.make(go.Panel, 'Vertical', buttonpanelStyle,
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'a'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif',
-                                        stroke: "black"
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'aText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'b'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'bText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'c'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'cText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'd'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'dText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'e'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'eText')))
                             )
                         )
@@ -352,100 +258,41 @@
                 myDiagram.nodeTemplateMap.add('6_decision',
                     go.GraphObject.make(go.Node, 'Auto',
                         // Each decision box
-                        go.GraphObject.make(go.Shape, 'RoundedRectangle', { fill: 'yellow', stroke: 'black', desiredSize: new go.Size(300, 250) }),
-                        go.GraphObject.make(go.Panel, 'Vertical', {
-                            defaultStretch: go.GraphObject.Fill
-                        },
+                        go.GraphObject.make(go.Shape, 'RoundedRectangle', shapeStyle),
+                        go.GraphObject.make(go.Panel, 'Vertical', panelStyle,
                             // Title for each decision block
-                            go.GraphObject.make(go.TextBlock, {
-                                font: '900 16px Roboto, sans-serif',
-                                background: "lightcyan",
-                                margin: 0,
-                                textAlign: "center",
-                                wrap: go.TextBlock.WrapFit,
-                                desiredSize: new go.Size(280, NaN)
-                            },
+                            go.GraphObject.make(go.TextBlock, titleStyle,
                                 new go.Binding('text', 'title')),
                             // Object which holds the buttons    
-                            go.GraphObject.make(go.Panel, 'Vertical', {
-                                defaultAlignment: go.Spot.Center,
-                                margin: 5
-                            },
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                            go.GraphObject.make(go.Panel, 'Vertical', buttonpanelStyle,
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'a'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif',
-                                        stroke: "black"
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'aText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'b'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'bText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'c'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'cText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'd'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'dText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'e'),
-                                    go.GraphObject.make(go.TextBlock, {
-                                        font: '900 16px Roboto, sans-serif'
-                                    },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'eText'))),
 
-                                go.GraphObject.make('Button', {
-                                    click: buttonExpandCollapse,
-                                    toolTip: tooltipTemplate,
-                                    "ButtonBorder.fill": "white",
-                                    "_buttonFillOver": "cyan",
-                                    width: 150
-                                },
+                                go.GraphObject.make('Button', buttonStyle,
                                     new go.Binding('portId', 'f'),
-                                    go.GraphObject.make(go.TextBlock, { font: '900 16px Roboto, sans-serif' },
+                                    go.GraphObject.make(go.TextBlock, textBlockStyle,
                                         new go.Binding('text', 'fText')))
                             )
                         )
@@ -455,13 +302,10 @@
                 // Define the Node template for leaf nodes
                 myDiagram.nodeTemplateMap.add('personality',
                     go.GraphObject.make(go.Node, 'Auto',
-                        go.GraphObject.make(go.Shape, 'Rectangle', { fill: 'whitesmoke', stroke: 'lightgray' }),
-                        go.GraphObject.make(go.TextBlock, {
-                            font: '13px Roboto, sans-serif',
-                            wrap: go.TextBlock.WrapFit,
-                            desiredSize: new go.Size(200, NaN),
-                            margin: 5
-                        },
+                        go.GraphObject.make(go.Shape, 'RoundedRectangle',
+                            resultPanelStyle),
+                        go.GraphObject.make(go.TextBlock,
+                            resultTextStyle,
                             new go.Binding('text', 'text'))
                     )
                 );
@@ -469,7 +313,11 @@
                 // Define the Link template
                 myDiagram.linkTemplate = go.GraphObject.make(go.Link, { routing: go.Link.Orthogonal },
                     new go.Binding('fromPortId', 'fromport'),
-                    go.GraphObject.make(go.Shape, { stroke: 'lightblue', strokeWidth: 2 })
+                    go.GraphObject.make(go.Shape,
+                        {
+                            stroke: '#1b2434',
+                            strokeWidth: 3
+                        })
                 );
 
                 // Fetch the JSON file containing the node data
@@ -551,7 +399,34 @@
                                     d.c = 'c'; d.cText = 'I\m not sure';
                                 }
                                 break;
-                            
+                            case 5:
+                                const c5_lc = d.key.slice(-1);
+                                // check for pathway A or B
+                                if (c4_lc === 'a') {
+                                    if (c5_lc === 'a' || c5_lc === 'c') {
+                                        d.category = 'personality';
+                                        d.text = 'You need this';
+                                    }
+                                    else {
+                                        d.category = 'personality';
+                                        d.text = 'Probably don\'t need.';
+                                    }
+                                }
+                                else {
+                                    if (c5_lc === 'a') {
+                                        d.category = 'personality';
+                                        d.text = 'You need this';
+                                    }
+                                    else {
+                                        d.category = '3_decision';
+                                        d.a = 'a'; d.aText = 'Yes';
+                                        d.b = 'b'; d.bText = 'No';
+                                        d.c = 'c'; d.cText = 'I\m not sure';
+                                    }
+
+                                }
+                                break;
+
                             default:
                                 d.category = 'personality';
                                 d.text = d.title;
@@ -588,7 +463,7 @@
         <div id="myDiagramDiv" style="border: solid 1px black; 
                 width: 800px; 
                 height: 900px;
-                background: yellow;
+                background: #73dbdb;
                 "></div>
     </div>
 </body>
